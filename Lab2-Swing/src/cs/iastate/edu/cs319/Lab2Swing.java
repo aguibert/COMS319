@@ -37,7 +37,7 @@ public class Lab2Swing extends JFrame {
 		
 		JPanel panel_list = new ListTab();
 		JPanel panel_tree = new JPanel();
-		JPanel panel_table = new JPanel();
+		JPanel panel_table = new TableTab();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
