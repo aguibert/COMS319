@@ -15,12 +15,12 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 
-public class ListTab extends JPanel
+public class Tab_List extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	private final DataModel dataModel = new DataModel();
 
-	public ListTab(){
+	public Tab_List(){
 		// Populate list tab
 		final JList<String> list = new JList<String>(dataModel);
 		list.setCellRenderer(new SelectedCellRenderer());
@@ -37,7 +37,7 @@ public class ListTab extends JPanel
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new RemoveWindow(dataModel);
+				new Dialog_AddCompany(dataModel);
 			}
 		});
 		add(btnAdd);
