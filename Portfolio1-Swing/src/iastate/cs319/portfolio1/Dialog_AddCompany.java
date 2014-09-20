@@ -1,7 +1,6 @@
 package iastate.cs319.portfolio1;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -49,7 +48,7 @@ public class Dialog_AddCompany extends JDialog {
                 okButton.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        EventQueue.invokeLater(dm.addAsRunnable(newCompany.getText()));
+                        //EventQueue.invokeLater(dm.addAsRunnable(newCompany.getText()));
                         rwindow.dispose();
                     }
                 });
