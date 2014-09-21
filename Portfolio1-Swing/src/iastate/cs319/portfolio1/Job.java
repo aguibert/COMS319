@@ -9,7 +9,7 @@ import java.util.Date;
  * @author aguibert
  * 
  */
-class Job implements Runnable {
+class Job extends Thread {
 
     public enum JOB_STATE {
         WAITING,
@@ -27,6 +27,14 @@ class Job implements Runnable {
     }
 
     @Override
+    public void start() {
+        if (getJobState() == JOB_STATE.WAITING)
+            super.start();
+        else
+            System.out.println("This job has already been started.");
+    }
+
+    @Override
     public void run() {
         long startTime = System.currentTimeMillis();
         setState(JOB_STATE.RUNNING);
@@ -39,7 +47,7 @@ class Job implements Runnable {
         System.out.println("Job " + jobName + " completed in " + (System.currentTimeMillis() - startTime) + "ms.");
     }
 
-    public JOB_STATE getState() {
+    public JOB_STATE getJobState() {
         return state;
     }
 

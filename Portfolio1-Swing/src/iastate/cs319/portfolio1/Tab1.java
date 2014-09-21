@@ -41,7 +41,6 @@ public class Tab1 extends JPanel
         add(scrollPane);
 
         JPanel panel = new JPanel();
-        panel.setBackground(Color.PINK);
         panel.setBounds(218, 6, 226, 210);
         add(panel);
 
@@ -69,8 +68,9 @@ public class Tab1 extends JPanel
         btnStartJob.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                for (Job j : list.getSelectedValuesList())
-                    new Thread(j).start();
+                for (Job j : list.getSelectedValuesList()) {
+                    j.start();
+                }
             }
         });
         panel.add(btnStartJob);
@@ -108,7 +108,7 @@ public class Tab1 extends JPanel
                 c.setForeground(Color.white);
             else
                 c.setForeground(Color.black);
-            switch (((Job) value).getState()) {
+            switch (((Job) value).getJobState()) {
                 case WAITING:
                     c.setBackground(Color.red);
                     break;

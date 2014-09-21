@@ -1,16 +1,18 @@
 package iastate.cs319.portfolio1;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+import javax.swing.JTextField;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
 
 /**
  * 
@@ -20,85 +22,62 @@ import javax.swing.tree.DefaultTreeModel;
 public class Tab2 extends JPanel
 {
     private static final long serialVersionUID = 1L;
-    private JTree tree;
-    private DefaultTreeModel tModel;
+    final JEditorPane textWindow = new JEditorPane();
+    private JTextField textField;
+    private JCheckBox chckbxMatchCase = new JCheckBox("Match case");
+    private static String initalText = "\"If you know the enemy and know yourself, you need not fear the result of a hundred battles. If you know yourself but not the enemy, for every victory gained you will also suffer a defeat. If you know neither the enemy nor yourself, you will succumb in every battle.\""
+                                       + "\n― Sun Tzu, The Art of War";
 
     public Tab2() {
-        // Layout Management of the Panel
-        setLayout(new BorderLayout());
+        setLayout(null);
+        textWindow.setText(initalText);
+        textWindow.setBounds(6, 6, 399, 126);
+        add(textWindow);
 
-        // CREATE THE TREEMODEL
-        tModel = createTreeModel();
+        textField = new JTextField();
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                highlightText(textField.getText());
+            }
+        });
+        textField.setBounds(56, 138, 190, 28);
+        add(textField);
+        textField.setColumns(10);
 
-        // CREATE THE JTREE (the VIEW) and SET ITS PROPERTIES
-        tree = new JTree(tModel);
-        tree.setShowsRootHandles(true);
-        tree.setRootVisible(true);
-        tree.setEditable(false);
+        JLabel lblSearch = new JLabel("Search:");
+        lblSearch.setBounds(6, 144, 61, 16);
+        add(lblSearch);
+        chckbxMatchCase.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                highlightText(textField.getText());
+            }
+        });
 
-        // ADD THE JTREE to the main panel (in a scroll pane)
-        JScrollPane scroll = new JScrollPane(tree);
-        add(scroll, BorderLayout.CENTER);
-
-        // CREATE THE CONTROLLER BUTTONS TO MODIFY THE TREE MODEL
-        JPanel controllerButtonsPanel = createControllerButtonsPanel();
-
-        // ADD THE CONTROLLER BUTTONS to the main panel.
-        add(controllerButtonsPanel, BorderLayout.SOUTH);
-
+        chckbxMatchCase.setBounds(291, 140, 114, 23);
+        add(chckbxMatchCase);
     }
 
-    private DefaultTreeModel createTreeModel() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Animals");
-        HashMap<String, String[]> treeMap = new HashMap<String, String[]>();
-        treeMap.put("Mammals", new String[] { "Human", "Kangaroo", "Elephant", "Goat" });
-        treeMap.put("Reptiles", new String[] { "Lizard", "Boa", "Iguana" });
-        treeMap.put("Birds", new String[] { "Duck", "Pigeon", "Turkey", "Goose" });
-        treeMap.put("Insects", new String[] { "Termite", "Ladybug", "Fly", "Ant" });
-        treeMap.put("Aquatic", new String[] { "Sword Fish", "Shark", "Whale" });
-        for (String animal : treeMap.keySet()) {
-            DefaultMutableTreeNode curNode = new DefaultMutableTreeNode(animal, true);
-            root.add(curNode);
-            for (String type : treeMap.get(animal))
-                curNode.add(new DefaultMutableTreeNode(type, false));
+    private void highlightText(String toHighlight) {
+        textWindow.getHighlighter().removeAllHighlights();
+
+        if (toHighlight == null || toHighlight.trim().length() < 1)
+            return;
+
+        Document doc = textWindow.getDocument();
+        boolean matchCase = chckbxMatchCase.isSelected();
+        try {
+            for (int i = 0; i + toHighlight.length() < doc.getLength(); i++) {
+                String match = doc.getText(i, toHighlight.length());
+                if ((matchCase && toHighlight.equals(match)) ||
+                    (!matchCase && toHighlight.equalsIgnoreCase(match))) {
+                    DefaultHighlighter.DefaultHighlightPainter highlighter = new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+                    textWindow.getHighlighter().addHighlight(i, i + toHighlight.length(), highlighter);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        DefaultTreeModel treeModel = new DefaultTreeModel(root);
-        return treeModel;
-    }
-
-    private JPanel createControllerButtonsPanel() {
-        JPanel buttonPanel = new JPanel();
-        JButton addChld = new JButton("Add");
-        addChld.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                new Dialog_AddAnimal(tModel, tree);
-            }
-        });
-        JButton remNode = new JButton("Remove");
-        buttonPanel.add(addChld);
-        buttonPanel.add(remNode);
-
-        // remove some selected node: you cannot remove the root node
-        remNode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                // Identify the node that has been selected
-                DefaultMutableTreeNode selected = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-                if (selected == null)
-                    return;
-
-                // Identify the parent of the selected node; we are not allowing
-                // the root node to be removed
-                if (selected.getParent() == null)
-                    return;
-
-                // User the models remove method to remove the selected node
-                tModel.removeNodeFromParent(selected);
-            }
-        });
-
-        return buttonPanel;
-
     }
 }
