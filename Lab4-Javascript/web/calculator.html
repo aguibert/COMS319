@@ -1,0 +1,41 @@
+<html>
+<head>
+SE319 Group 10 Calculator
+<script src="calculator2.js" ></script>
+</head onLoad="onLoad()">
+<body>
+<p>
+<div align="center">
+<table>
+	<tr><td>
+	<input id="screen" type="text" style="width:193px;height:45px" readonly="true" />
+	</td></tr> <tr><td>
+	<button type="button" onclick="numClicked(7)" style="width:45px;height:45px">7 </button>
+	<button type="button" onclick="numClicked(8)" style="width:45px;height:45px">8 </button>
+	<button type="button" onclick="numClicked(9)" style="width:45px;height:45px">9 </button>
+	<button type="button" onclick="operatorClicked('+')" style="width:45px;height:45px">+ </button> 
+	</td></tr>  <tr><td>
+	<button type="button" onclick="numClicked(4)" style="width:45px;height:45px">4 </button>
+	<button type="button" onclick="numClicked(5)" style="width:45px;height:45px">5 </button>
+	<button type="button" onclick="numClicked(6)" style="width:45px;height:45px">6 </button>
+	<button type="button" onclick="operatorClicked('-')" style="width:45px;height:45px">- </button> 
+	</td></tr>  <tr><td>
+	<button type="button" onclick="numClicked(1)" style="width:45px;height:45px">1 </button>
+	<button type="button" onclick="numClicked(2)" style="width:45px;height:45px">2 </button>
+	<button type="button" onclick="numClicked(3)" style="width:45px;height:45px">3 </button>
+	<button type="button" onclick="operatorClicked('*')" style="width:45px;height:45px">* </button> 
+	</td></tr> <tr><td>
+	<button type="button" onclick="numClicked(0)" style="width:45px;height:45px">0 </button>
+	<button type="button" onclick="" style="width:45px;height:45px">. </button>
+	<button type="button" onclick="equalsClicked()" style="width:45px;height:45px">= </button>
+	<button type="button" onclick="operatorClicked('/')" style="width:45px;height:45px">/ </button> 
+	</td></tr> <tr><td>
+	<button type="button" onclick="clearScreen()" style="width:45px;height:45px">C </button>
+	<button type="button" onclick="clearMem()" style="width:45px;height:45px">MC</button>
+	<button type="button" onclick="showMem()" style="width:45px;height:45px">MR</button>
+	<button type="button" onclick="addMem()" style="width:45px;height:45px">M+</button>
+	</td></tr>
+</table>
+</div>
+</body>
+</html>
