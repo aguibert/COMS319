@@ -7,23 +7,23 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JCheckBox;
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 
 /**
- * 
- * @author put author here
- * 
+ * @author aguibert
  */
 public class Tab2 extends JPanel
 {
     private static final long serialVersionUID = 1L;
-    final JEditorPane textWindow = new JEditorPane();
+    final JTextArea textWindow = new JTextArea();
     private JTextField textField;
+    private long lastRedrawRequest = System.currentTimeMillis();
+    private boolean redrawNeeded = false;
     private JCheckBox chckbxMatchCase = new JCheckBox("Match case");
     private static String initalText = "\"If you know the enemy and know yourself, you need not fear the result of a hundred battles. If you know yourself but not the enemy, for every victory gained you will also suffer a defeat. If you know neither the enemy nor yourself, you will succumb in every battle.\""
                                        + "\n― Sun Tzu, The Art of War";
@@ -32,13 +32,21 @@ public class Tab2 extends JPanel
         setLayout(null);
         textWindow.setText(initalText);
         textWindow.setBounds(6, 6, 399, 126);
+        textWindow.setLineWrap(true);
+        textWindow.setWrapStyleWord(true);
+        textWindow.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                requestRedraw(true);
+            }
+        });
         add(textWindow);
 
         textField = new JTextField();
         textField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyReleased(KeyEvent e) {
-                highlightText(textField.getText());
+                requestRedraw(true);
             }
         });
         textField.setBounds(56, 138, 190, 28);
@@ -51,15 +59,25 @@ public class Tab2 extends JPanel
         chckbxMatchCase.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                highlightText(textField.getText());
+                requestRedraw(false);
             }
         });
 
         chckbxMatchCase.setBounds(291, 140, 114, 23);
         add(chckbxMatchCase);
+
+        new RedrawDaemon().start();
+    }
+
+    private void requestRedraw(boolean deferrable) {
+        redrawNeeded = true;
+        if (deferrable)
+            lastRedrawRequest = System.currentTimeMillis();
     }
 
     private void highlightText(String toHighlight) {
+        redrawNeeded = false;
+
         textWindow.getHighlighter().removeAllHighlights();
 
         if (toHighlight == null || toHighlight.trim().length() < 1)
@@ -78,6 +96,21 @@ public class Tab2 extends JPanel
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private class RedrawDaemon extends Thread
+    {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(250);
+                    if (redrawNeeded && (System.currentTimeMillis() - lastRedrawRequest) > 250)
+                        highlightText(textField.getText());
+                } catch (Exception e) {
+                }
+            }
         }
     }
 }

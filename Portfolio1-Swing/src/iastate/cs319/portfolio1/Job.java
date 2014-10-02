@@ -12,9 +12,9 @@ import java.util.Date;
 class Job extends Thread {
 
     public enum JOB_STATE {
-        WAITING,
-        RUNNING,
-        COMPLETED
+        WAITING, // Red
+        RUNNING, // Yellow
+        COMPLETED // Green
     }
 
     public final String jobName;
@@ -40,11 +40,13 @@ class Job extends Thread {
         setState(JOB_STATE.RUNNING);
         System.out.println("Job " + jobName + " started at " + new Date(startTime));
         try {
+            // Simulate some job that takes a long time by sleeping the thread
             Thread.sleep(jobDurSeconds * 1000);
         } catch (InterruptedException e) {
         }
         setState(JOB_STATE.COMPLETED);
-        System.out.println("Job " + jobName + " completed in " + (System.currentTimeMillis() - startTime) + "ms.");
+        System.out.println("Job " + jobName + " completed in " +
+                           (System.currentTimeMillis() - startTime) + "ms.");
     }
 
     public JOB_STATE getJobState() {
@@ -52,8 +54,10 @@ class Job extends Thread {
     }
 
     public void setState(JOB_STATE newState) {
+        if (newState == state)
+            return; // If no state change occurred, no-op
         state = newState;
-        DataModel.updateList();
+        DataModel.updateList(); // If state change occurred, notify the UI
     }
 
     @Override

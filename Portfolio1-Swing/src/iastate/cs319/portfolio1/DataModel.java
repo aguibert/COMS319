@@ -6,6 +6,9 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.JList;
 
+/**
+ * @author aguibert
+ */
 public class DataModel extends AbstractListModel<Job>
 {
     private static final long serialVersionUID = -3324475927239713138L;

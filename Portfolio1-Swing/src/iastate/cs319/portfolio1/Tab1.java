@@ -3,6 +3,8 @@ package iastate.cs319.portfolio1;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -18,7 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 
 /**
- * @author put author here
+ * @author aguibert
  */
 public class Tab1 extends JPanel
 {
@@ -41,7 +43,7 @@ public class Tab1 extends JPanel
         add(scrollPane);
 
         JPanel panel = new JPanel();
-        panel.setBounds(218, 6, 226, 210);
+        panel.setBounds(218, 6, 222, 210);
         add(panel);
 
         JLabel lblEnterAJob = new JLabel("Enter a job name:");
@@ -51,20 +53,27 @@ public class Tab1 extends JPanel
         panel.add(jobName);
         jobName.setColumns(12);
 
-        JLabel lblWhatIsThe = new JLabel("What is the job duration?");
+        JLabel lblWhatIsThe = new JLabel("What is the job duration?     ");
         panel.add(lblWhatIsThe);
 
         final JFormattedTextField jobDuration = new JFormattedTextField();
         jobDuration.setColumns(6);
         panel.add(jobDuration);
 
-        JLabel lblSeconds = new JLabel("seconds");
+        JLabel lblSeconds = new JLabel("sec");
         panel.add(lblSeconds);
-
-        JButton btnCreateJob = new JButton("Create Job");
+        JButton btnCreateJob = new JButton("    Create Job    ");
+        btnCreateJob.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {}
+        });
         panel.add(btnCreateJob);
 
         JButton btnStartJob = new JButton("Start Selected Jobs");
+        btnStartJob.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {}
+        });
         btnStartJob.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -102,7 +111,7 @@ public class Tab1 extends JPanel
     @SuppressWarnings("serial")
     private class SelectedCellRenderer extends DefaultListCellRenderer {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             if (isSelected)
                 c.setForeground(Color.white);
