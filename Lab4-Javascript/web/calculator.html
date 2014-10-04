@@ -1,7 +1,8 @@
 <html>
 <head>
+<script src="jquery-2.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="stylesheet.css"/>
 <script src="calculator.js" ></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head >
 <body>
 <p>
@@ -9,32 +10,32 @@
 <h1>SE319 Group 10 Calculator</h1>
 <table>
 	<tr><td>
-	<input id="calcScreen" type="text" style="width:193px;height:45px" readonly="true" />
+	<input id="calcScreen" type="text" readonly/>
 	</td></tr> <tr><td>
-	<button type="button" onclick="numClicked(7)" style="width:45px;height:45px">7 </button>
-	<button type="button" onclick="numClicked(8)" style="width:45px;height:45px">8 </button>
-	<button type="button" onclick="numClicked(9)" style="width:45px;height:45px">9 </button>
-	<button type="button" onclick="operatorClicked('+')" style="width:45px;height:45px">+ </button> 
+	<button type="button" class="num">7</button>
+	<button type="button" class="num">8</button>
+	<button type="button" class="num">9</button>
+	<button type="button" class="operator">+</button> 
 	</td></tr>  <tr><td>
-	<button type="button" onclick="numClicked(4)" style="width:45px;height:45px">4 </button>
-	<button type="button" onclick="numClicked(5)" style="width:45px;height:45px">5 </button>
-	<button type="button" onclick="numClicked(6)" style="width:45px;height:45px">6 </button>
-	<button type="button" onclick="operatorClicked('-')" style="width:45px;height:45px">- </button> 
+	<button type="button" class="num">4</button>
+	<button type="button" class="num">5</button>
+	<button type="button" class="num">6</button>
+	<button type="button" class="operator">-</button> 
 	</td></tr>  <tr><td>
-	<button type="button" onclick="numClicked(1)" style="width:45px;height:45px">1 </button>
-	<button type="button" onclick="numClicked(2)" style="width:45px;height:45px">2 </button>
-	<button type="button" onclick="numClicked(3)" style="width:45px;height:45px">3 </button>
-	<button type="button" onclick="operatorClicked('*')" style="width:45px;height:45px">* </button> 
+	<button type="button" class="num">1</button>
+	<button type="button" class="num">2</button>
+	<button type="button" class="num">3</button>
+	<button type="button" class="operator">*</button> 
 	</td></tr> <tr><td>
-	<button type="button" onclick="numClicked(0)" style="width:45px;height:45px">0 </button>
-	<button type="button" onclick="numClicked('.')" style="width:45px;height:45px">. </button>
-	<button type="button" onclick="equalsClicked()" style="width:45px;height:45px">= </button>
-	<button type="button" onclick="operatorClicked('/')" style="width:45px;height:45px">/ </button> 
+	<button type="button" class="num">0</button>
+	<button type="button" class="num">.</button>
+	<button type="button" id="equals">=</button>
+	<button type="button" class="operator">/</button> 
 	</td></tr> <tr><td>
-	<button type="button" onclick="clearScreen()" style="width:45px;height:45px">C </button>
-	<button type="button" onclick="clearMem()" style="width:45px;height:45px">MC</button>
-	<button type="button" onclick="showMem()" style="width:45px;height:45px">MR</button>
-	<button type="button" onclick="addMem()" style="width:45px;height:45px">M+</button>
+	<button type="button" id="clearScreen"">C </button>
+	<button type="button" id="clearMem">MC</button>
+	<button type="button" id="showMem">MR</button>
+	<button type="button" id="addMem">M+</button>
 	</td></tr>
 </table>
 </div>

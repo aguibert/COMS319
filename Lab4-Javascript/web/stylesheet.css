@@ -1,0 +1,15 @@
+@CHARSET "ISO-8859-1";
+
+button{
+	height:45px;
+	width:45px;
+	border-radius:5px;
+}
+
+#calcScreen{
+	width:193px;
+	height:45px
+}
+
+.num {}
+.operator{}
