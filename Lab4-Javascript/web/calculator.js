@@ -1,5 +1,15 @@
 function numClicked(num){
-	calc.setCurNum((calc.curNum*10) + num);
+	var scrn = document.getElementById("calcScreen");
+	if(scrn.value == undefined || scrn.value == ""){
+		if(num == '.')
+			setScreenVal(0.0);
+		else
+			setScreenVal(num);
+	}
+	else
+		scrn.value += num;
+	calc.lastNum = getScreenVal();
+	console.log("val=" + getScreenVal());
 }
 
 function operatorClicked(op){
@@ -9,8 +19,9 @@ function operatorClicked(op){
 	else if(op == '/') calc.curOp = calc.div;
 	else console.log("ERROR: Operator not found: " + op);
 	if(calc.memoryValue == undefined)
-		calc.memoryValue = calc.curNum; // store the old number in memory
-	calc.setCurNum(0);
+		calc.memoryValue = getScreenVal(); // store the old number in memory
+	calc.lastNum = undefined;
+	clearScreen();
 }
 
 function equalsClicked(){
@@ -18,47 +29,55 @@ function equalsClicked(){
 }
 
 function clearScreen(){
-	calc.setCurNum(0);
+	document.getElementById("calcScreen").value = "";
 }
 
 function showMem(){
-	var scrn = document.getElementById("screen");
+	var scrn = document.getElementById("calcScreen");
 	if(calc.memoryValue == undefined)
 		scrn.value = "0";
 	else
-		scrn.value = calc.memoryValue;
+		setScreenVal(calc.memoryValue);
 }
 
 function clearMem(){
-	calc.memoryValue = 0;
+	console.log("mem cleared");
+	calc.memoryValue = undefined;
+	calc.lastNum = undefined;
 }
 
 function addMem(){
+	operatorClicked('+');
+	calc.lastNum = calc.memoryValue;
+	equalsClicked();
+}
+
+function getScreenVal(){
+	return parseFloat(document.getElementById("calcScreen").value);
+}
+function setScreenVal(num){
+	document.getElementById("calcScreen").value = Math.round(num*10)/10; // clears up any ugly floating point imprecision
 }
 
 var calc = {
-	curNum : 0,
-	curOp : undefined,
 	memoryValue : undefined,
-	setCurNum : function(num){
-		this.curNum = num;
-		document.getElementById("screen").value = num;
+	lastNum : undefined,
+	add : function(toAdd){
+		return this.memoryValue += toAdd;
 	},
-	add : function(){
-		return this.memoryValue += this.curNum;
+	sub : function(toSub){
+		return this.memoryValue -= toSub;
 	},
-	sub : function(){
-		return this.memoryValue -= this.curNum;
+	mult : function(toMult){
+		return this.memoryValue *= toMult;
 	},
-	mult : function(){
-		return this.memoryValue *= this.curNum;
-	},
-	div : function(){
-		return this.memoryValue /= this.curNum;
+	div : function(toDiv){
+		return this.memoryValue /= toDiv;
 	},
 	doOperation : function(){
-		var scrn = document.getElementById("screen");
-		var result = this.curOp();
-		scrn.value = result;
+		if(this.lastNum == undefined)
+			setScreenVal(this.curOp(getScreenVal()));
+		else
+			setScreenVal(this.curOp(this.lastNum));
 	}
 };

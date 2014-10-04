@@ -1,14 +1,15 @@
 <html>
 <head>
-SE319 Group 10 Calculator
-<script src="calculator2.js" ></script>
-</head onLoad="onLoad()">
+<script src="calculator.js" ></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head >
 <body>
 <p>
 <div align="center">
+<h1>SE319 Group 10 Calculator</h1>
 <table>
 	<tr><td>
-	<input id="screen" type="text" style="width:193px;height:45px" readonly="true" />
+	<input id="calcScreen" type="text" style="width:193px;height:45px" readonly="true" />
 	</td></tr> <tr><td>
 	<button type="button" onclick="numClicked(7)" style="width:45px;height:45px">7 </button>
 	<button type="button" onclick="numClicked(8)" style="width:45px;height:45px">8 </button>
@@ -26,7 +27,7 @@ SE319 Group 10 Calculator
 	<button type="button" onclick="operatorClicked('*')" style="width:45px;height:45px">* </button> 
 	</td></tr> <tr><td>
 	<button type="button" onclick="numClicked(0)" style="width:45px;height:45px">0 </button>
-	<button type="button" onclick="" style="width:45px;height:45px">. </button>
+	<button type="button" onclick="numClicked('.')" style="width:45px;height:45px">. </button>
 	<button type="button" onclick="equalsClicked()" style="width:45px;height:45px">= </button>
 	<button type="button" onclick="operatorClicked('/')" style="width:45px;height:45px">/ </button> 
 	</td></tr> <tr><td>
