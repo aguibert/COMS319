@@ -2,7 +2,8 @@ $(document).ready(function(){
 	var calc = {
 		curOp : undefined, // stores the current operation function to use
 		memoryValue : undefined, 
-		lastNum : undefined // for storing last number when equals is repeatedly pressed
+		lastNum : undefined, // for storing last number when equals is repeatedly pressed
+		sequence : false
 	};
 	
 	// Any number 0-9 or the '.' clicked
@@ -15,22 +16,41 @@ $(document).ready(function(){
 			else
 				setScreenVal(num);
 		} else {
-			scrn.value += num;
+			if(scrn.value == calc.memoryValue){
+				scrn.value = num;
+			}
+			else{
+				scrn.value += num;
+			}
 		}
 		calc.lastNum = getScreenVal();
 	});
 	// Any operator clicked: + - * /
 	var operatorClicked =  function(){
-		calc.curOp = $(this).html();
 		if(calc.memoryValue == undefined)
 			calc.memoryValue = getScreenVal(); // store the old number in memory
+		
+		if(calc.sequence == false){
+			document.getElementById("calcScreen").value = "";
+		}else{
+			calc.memoryValue = eval(calc.memoryValue + ' ' + calc.curOp + ' ' + calc.lastNum);
+			document.getElementById("calcScreen").value = calc.memoryValue;
+			
+		}
+		calc.curOp = $(this).html();
 		calc.lastNum = undefined;
-		document.getElementById("calcScreen").value = "";
+		calc.sequence = true;
 	};
 	var equalsClicked = function(){
 		var newNum = (calc.lastNum == undefined) ? getScreenVal() : calc.lastNum;
-		calc.memoryValue = eval(calc.memoryValue + ' ' + calc.curOp + ' ' + newNum);
+		if(calc.memoryValue != undefined){
+			calc.memoryValue = eval(calc.memoryValue + ' ' + calc.curOp + ' ' + newNum);
+		}
+		if(calc.memoryValue == undefined){
+			calc.memoryValue = getScreenVal();
+		}
 		setScreenVal(calc.memoryValue);
+		calc.sequence = false;
 	};
 	$(".operator").click(operatorClicked);
 	$("#equals").click(equalsClicked);
@@ -47,10 +67,12 @@ $(document).ready(function(){
 	$("#clearMem").click(function(){
 		calc.memoryValue = undefined;
 		calc.lastNum = undefined;
+		calc.sequence = false;
 	});
 	$("#addMem").click(function(){
-		document.getElementById("calcScreen").value = "";
-		calc.lastNum = calc.memoryValue;
+		var scrn = document.getElementById("calcScreen"); 
+		calc.lastNum = scrn.value;
+		calc.curOp = "+";
 		equalsClicked();
 	});
 });
